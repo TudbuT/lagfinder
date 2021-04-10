@@ -134,8 +134,8 @@ public class Main extends JavaPlugin {
         try {
             sender.sendMessage("Scanning and sorting...");
             new Thread(() -> {
-                Chunk[] chunks = EventListener.changes.keys().toArray(new Chunk[0]);
                 Cache<Chunk, Long> map = EventListener.changes.flip().flip();
+                Chunk[] chunks = map.keys().toArray(new Chunk[0]);
                 chunks = TudSort.sort(chunks, map::get, false);
                 sender.sendMessage("Done.");
                 sender.sendMessage(chunks.length + " chunks scanned.");
