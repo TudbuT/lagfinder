@@ -1,0 +1,8 @@
+name: LagFinder
+main: tudbut.lagfinder.Main
+version: 1.0.0
+commands:
+  lagchunks:
+    description: List of chunks that cause a lot of lag, sorted
+    permission: lagfinder.find
+    permission-message: You can't do that! (missing lagfinder.find)
