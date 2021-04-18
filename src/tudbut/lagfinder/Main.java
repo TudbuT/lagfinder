@@ -17,6 +17,7 @@ import tudbut.tools.ReflectUtil;
 import tudbut.tools.StringTools;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
@@ -134,9 +135,9 @@ public class Main extends JavaPlugin {
         try {
             sender.sendMessage("Scanning and sorting...");
             new Thread(() -> {
-                Cache<Chunk, Long> map = EventListener.changes.flip().flip();
+                Cache<Chunk, BigInteger> map = EventListener.changes.flip().flip();
                 Chunk[] chunks = map.keys().toArray(new Chunk[0]);
-                chunks = TudSort.sort(chunks, map::get, false);
+                chunks = TudSort.sort(chunks, chunk -> map.get(chunk).divide(BigInteger.valueOf(5000)).longValueExact(), false);
                 sender.sendMessage("Done.");
                 sender.sendMessage(chunks.length + " chunks scanned.");
                 try {
@@ -145,8 +146,8 @@ public class Main extends JavaPlugin {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                for (int i = 0 ; i < chunks.length ; i++) {
-                    sender.sendMessage(chunks[i].getX()*16 + " " + chunks[i].getZ()*16 + ": " + map.get(chunks[i]));
+                for (Chunk chunk : chunks) {
+                    sender.sendMessage(chunk.getX() * 16 + " " + chunk.getZ() * 16 + ": " + map.get(chunk));
                 }
             }).start();
         } catch (Exception e) {

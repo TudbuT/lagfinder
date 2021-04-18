@@ -13,10 +13,12 @@ import tudbut.tools.Cache;
 import tudbut.tools.Lock;
 import tudbut.tools.ThreadPool;
 
+import java.math.BigInteger;
+
 public class EventListener implements Listener {
 
     static ThreadPool pool = new ThreadPool(20, "Handler pool", false);
-    public static Cache<Chunk, Long> changes = new Cache<>();
+    public static Cache<Chunk, BigInteger> changes = new Cache<>();
     
     public void onAction(Event event) {
         if(event instanceof BlockEvent) {
@@ -41,20 +43,21 @@ public class EventListener implements Listener {
     }
     
     private void onAction(Chunk chunk) {
+        //noinspection SynchronizationOnLocalVariableOrMethodParameter fuck you i know what im doing
         synchronized (chunk) {
-            Long i = changes.get(chunk);
+            BigInteger i = changes.get(chunk);
             if (i == null) {
-                changes.add(chunk, 1L, 10000, new Cache.CacheRetriever<Chunk, Long>() {
+                changes.add(chunk, BigInteger.valueOf(1), 10000, new Cache.CacheRetriever<Chunk, BigInteger>() {
                     @Override
-                    public Long doRetrieve(Long old, Chunk key) {
+                    public BigInteger doRetrieve(BigInteger old, Chunk key) {
                         return null;
                     }
                 });
             }
             else {
-                changes.add(chunk, i + 1L, 10000, new Cache.CacheRetriever<Chunk, Long>() {
+                changes.add(chunk, i.add(BigInteger.ONE), 10000, new Cache.CacheRetriever<Chunk, BigInteger>() {
                     @Override
-                    public Long doRetrieve(Long old, Chunk key) {
+                    public BigInteger doRetrieve(BigInteger old, Chunk key) {
                         return null;
                     }
                 });

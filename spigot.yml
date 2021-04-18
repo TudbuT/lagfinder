@@ -63,7 +63,6 @@ stats:
 world-settings:
   default:
     verbose: true
-    mob-spawn-range: 4
     growth:
       cactus-modifier: 100
       cane-modifier: 100
@@ -111,6 +110,7 @@ world-settings:
       entity: 50
     squid-spawn-range:
       min: 45.0
+    mob-spawn-range: 4
     enable-zombie-pigmen-portal-spawns: true
     merge-radius:
       item: 2.5
